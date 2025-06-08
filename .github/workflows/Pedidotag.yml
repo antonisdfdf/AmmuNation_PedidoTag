@@ -1,0 +1,40 @@
+name: Send to Discord
+
+on: 
+  push:
+    branches: 
+      - main
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  send_to_discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar mensagem para o Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{
+                "embeds": [
+                  {
+                    "title": "**PEDIDO DE TAG**",
+                    "description": "Peça a tag respetiva ao seu trabalho. Se faltar alguma tag importante, entre em contacto conosco pela caixa de email, obrigado!\nㅤ\n",
+                    "color": 13448488,
+                    "image": {
+                       "url": "https://r2.fivemanage.com/mFTHMPcKcKewkV0bBI44W/logotipoesticado.png"
+                    },
+                    "fields": [
+                      {
+                        "name": "**Disponíveis:**",
+                        "value": "> <@&1381178966806892594>\n > <@&1381179141415763998>\n > <@&1381179159522316329>\n > <@&1381179190522544128>\n > <@&1381179214350258309>\n > <@&1381179242171203716>\n > <@&1381179255588782120>\n > <@&1381179287335469159>\nㅤ\n",
+                        "inline": false
+                      }
+                    ]
+                  }
+                ]
+              }' \
+          https://discord.com/api/webhooks/1381279840078008360/lFppm5iatMkmpiy_FHOdyQfGpT5-F50uZhdEESvn9BrQAq8Hgf3Z_q3fPBo7yNpP6YZB
